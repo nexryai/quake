@@ -9,8 +9,8 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/p2pquake/jmaxml-seis-parser-go/epsp"
-	"github.com/p2pquake/jmaxml-seis-parser-go/jmaseis"
+	"github.com/nexryai/quake/internal/epsp"
+	"github.com/nexryai/quake/internal/jmaseis"
 	"github.com/stretchr/testify/assert"
 )
 

@@ -8,7 +8,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/p2pquake/jmaxml-seis-parser-go/jmaseis"
+	"github.com/nexryai/quake/internal/jmaseis"
 	"github.com/spf13/cobra"
 )
 
