@@ -12,8 +12,10 @@ const fetchMapData = async () => {
 };
 
 onMounted(async () => {
-    // マップを初期化
-    map.value = L.map("map", {attributionControl: false, zoomControl: false}).setView([35.6895, 139.6917], 10); // 東京を中心に表示
+    map.value = L.map("map", {
+        attributionControl: false,
+        zoomControl: false
+    }).setView([35.6895, 139.6917], 10); // 東京を中心に表示
 
     // タイルレイヤーを追加
     /*
