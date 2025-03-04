@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import TheWelcome from "../components/TheWelcome.vue";
+import QuakeMap from "@/components/QuakeMap.vue";
 </script>
 
 <template>
   <main>
-    <TheWelcome />
+    <QuakeMap />
   </main>
 </template>
