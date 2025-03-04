@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/nexryai/quake/internal/jmaseis"
+	"github.com/nexryai/quake/server/jmaseis"
 )
 
 type NotSupportedError struct {

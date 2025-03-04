@@ -4,8 +4,8 @@ import (
 	"errors"
 	"strings"
 
-	"github.com/nexryai/quake/internal/epsp"
-	"github.com/nexryai/quake/internal/jmaseis"
+	"github.com/nexryai/quake/server/epsp"
+	"github.com/nexryai/quake/server/jmaseis"
 )
 
 func Vtse2Epsp(vtse jmaseis.Report) (*epsp.JMATsunami, error) {

@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/nexryai/quake/internal/epsp"
-	"github.com/nexryai/quake/internal/jmaseis"
+	"github.com/nexryai/quake/server/epsp"
+	"github.com/nexryai/quake/server/jmaseis"
 )
 
 func Vxse2EpspEEW(vxse jmaseis.Report) (*epsp.JMAEEW, error) {

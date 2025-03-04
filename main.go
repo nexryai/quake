@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/nexryai/quake/internal/jmafeed"
+	"github.com/nexryai/quake/server/jmafeed"
 )
 
 func main() {
