@@ -1,4 +1,5 @@
 import { defineConfigWithVueTs, vueTsConfigs } from "@vue/eslint-config-typescript";
+// @ts-ignore
 import pluginImport from "eslint-plugin-import";
 import pluginVue from "eslint-plugin-vue";
 import pluginTypescript from "typescript-eslint";
