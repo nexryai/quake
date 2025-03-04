@@ -8,7 +8,7 @@ import (
 	"log"
 	"os"
 
-	"github.com/nexryai/quake/internal/jmaseis"
+	"github.com/nexryai/quake/server/jmaseis"
 	"github.com/spf13/cobra"
 )
 
