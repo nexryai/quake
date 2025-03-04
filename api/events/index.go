@@ -19,10 +19,10 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 		Events: *events,
 	}
 
-	json, err := json.Marshal(data)
+	res, err := json.Marshal(data)
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Fprintf(w, "%s", json)
+	fmt.Fprintf(w, "%s", res)
 }

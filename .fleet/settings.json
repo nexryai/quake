@@ -1,0 +1,24 @@
+{
+    "plugins": [
+        {
+            "type": "add",
+            "pluginName": "fleet.eslint"
+        },
+        {
+            "type": "add",
+            "pluginName": "fleet.vite"
+        },
+        {
+            "type": "add",
+            "pluginName": "fleet.vue"
+        },
+        {
+            "type": "add",
+            "pluginName": "fleet.json"
+        },
+        {
+            "type": "add",
+            "pluginName": "fleet.go"
+        }
+    ]
+}
