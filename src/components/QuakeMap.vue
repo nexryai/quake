@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import L from "leaflet";
-import { onMounted, ref } from "vue";
+import { onMounted } from "vue";
 import "leaflet/dist/leaflet.css";
 
-const map = ref(null);
 
 const fetchMapData = async () => {
     const response = await fetch("/JP20250304.geojson");
@@ -12,7 +11,7 @@ const fetchMapData = async () => {
 };
 
 onMounted(async () => {
-    map.value = L.map("map", {
+    const map = L.map("map", {
         attributionControl: false,
         zoomControl: false
     }).setView([35.6895, 139.6917], 10); // 東京を中心に表示
@@ -33,7 +32,7 @@ onMounted(async () => {
                 color: "gray",  // 境界線の色
                 weight: 2,
                 opacity: 0.7,
-                fillColor: feature.properties.code === "360" ? "red" : "white",
+                fillColor: feature!.properties.code === "360" ? "red" : "white",
                 fillOpacity: 1
             };
         },
@@ -45,7 +44,7 @@ onMounted(async () => {
         pointToLayer: (feature, latlng) => {
             return L.circleMarker(latlng, { radius: 8, color: "red" });
         },
-    }).addTo(map.value);
+    }).addTo(map);
 });
 </script>
 
