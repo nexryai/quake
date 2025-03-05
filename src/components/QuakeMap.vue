@@ -49,10 +49,7 @@ const fetchQuakeData = async (id: string): Promise<EarthquakeData> => {
 };
 
 onMounted(async () => {
-    const map = L.map("map", {
-        attributionControl: false,
-        zoomControl: false
-    }).setView([35.6895, 139.6917], 10); // 東京を中心に表示
+    // 東京を中心に表示
 
     // タイルレイヤーを追加
     /*
@@ -78,6 +75,11 @@ onMounted(async () => {
     });
 
     console.log(areaScaleMap);
+
+    const map = L.map("map", {
+        attributionControl: false,
+        zoomControl: false
+    }).setView([quakeData.earthquake.hypocenter.latitude, quakeData.earthquake.hypocenter.longitude], 7);
 
     // GeoJSON をマップに追加
     L.geoJSON(geojson, {
@@ -120,5 +122,6 @@ onMounted(async () => {
 #map {
     width: 100%;
     height: 500px;
+    border-radius: 10px;
 }
 </style>
