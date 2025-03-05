@@ -12,3 +12,7 @@ export const getQuakeScaleColor = (scale: number): string => {
     default: return "#CCCCCC"; // 不明な値 (グレー)
     }
 };
+
+export const getQuakeScaleColorText = (scale: number): string => {
+    return scale <= 60 ? "white" : "black";
+};

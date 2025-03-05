@@ -15,7 +15,7 @@ func main() {
 		fmt.Println(e)
 	}
 
-	data, err := controller.GetEventDetailsJson((*events)[0])
+	data, err := controller.GetEventDetailsJson((*events)[0], false)
 	if err != nil {
 		panic(err)
 	}
