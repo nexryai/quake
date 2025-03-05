@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/nexryai/quake/server/jmafeed"
+	"github.com/nexryai/quake/server/controller"
 )
 
 type Events struct {
@@ -13,7 +13,7 @@ type Events struct {
 }
 
 func Handler(w http.ResponseWriter, r *http.Request) {
-	events, _ := jmafeed.GetJMAEvents()
+	events, _ := controller.GetJMAEvents()
 
 	data := &Events {
 		Events: *events,
