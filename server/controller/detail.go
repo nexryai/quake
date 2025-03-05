@@ -18,8 +18,13 @@ const eventDataBaseUrl = "https://www.data.jma.go.jp/developer/xml/data/"
 const force = false
 const ignoreWarning = false
 
-func GetEventDetailsJson(eventId string) (*string, error) {
-	respReader, err := feed.FetchEventData(eventDataBaseUrl, eventId)
+func GetEventDetailsJson(eventId string, isDebug bool) (*string, error) {
+	baseUrl := eventDataBaseUrl
+	if isDebug {
+		baseUrl = "https://raw.githubusercontent.com/nexryai/quake/main/test/examples/"
+	}
+
+	respReader, err := feed.FetchEventData(baseUrl, eventId)
 	if err != nil {
 		return nil, err
 	}
