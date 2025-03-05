@@ -8,7 +8,7 @@ const isLoading = ref(true);
 
 onMounted(async () => {
     const resp = await fetch("https://quake-jade.vercel.app/api/events");
-    const events = (await resp.json() as { evets: string[] }).events;
+    const events = (await resp.json() as { events: string[] }).events;
     eventId.value = events[0];
 
     isLoading.value = false;
