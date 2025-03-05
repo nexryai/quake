@@ -1,13 +1,51 @@
 <script setup lang="ts">
 import L from "leaflet";
 import { onMounted } from "vue";
-import "leaflet/dist/leaflet.css";
 
+import "leaflet/dist/leaflet.css";
+import {getQuakeScaleColor} from "@/color.ts";
+
+type EarthquakeData = {
+    expire: null;
+    issue: {
+        source: string;
+        time: string;
+        type: string;
+        correct: string;
+    };
+    earthquake: {
+        time: string;
+        hypocenter: {
+            name: string;
+            latitude: number;
+            longitude: number;
+            depth: number;
+            magnitude: number;
+        };
+        maxScale: number;
+        domesticTsunami: string;
+        foreignTsunami: string;
+    };
+    points: Point[];
+};
+
+type Point = {
+    code: string;
+    areaCode: string;
+    pref: string;
+    addr: string;
+    scale: number;
+    isArea: boolean;
+};
 
 const fetchMapData = async () => {
     const response = await fetch("/JP20250304.geojson");
+    return await response.json();
+};
 
-    return  await response.json();
+const fetchQuakeData = async (id: string): Promise<EarthquakeData> => {
+    const response = await fetch(`https://quake-jade.vercel.app/api/events/details?id=${id}`);
+    return await response.json() as EarthquakeData;
 };
 
 onMounted(async () => {
@@ -25,6 +63,22 @@ onMounted(async () => {
     // GeoJSON データ
     const geojson = await fetchMapData();
 
+    const quakeData = await fetchQuakeData("20250304061539_0_VXSE53_010000");
+
+    // areaCodeごとの最大scaleを求める
+    const areaScaleMap = new Map<string, number>();
+
+    quakeData.points.forEach((point: Point) => {
+        const { areaCode, scale } = point;
+        const maxScale = areaScaleMap.get(areaCode);
+
+        if (maxScale === undefined || scale > maxScale) {
+            areaScaleMap.set(areaCode, scale);
+        }
+    });
+
+    console.log(areaScaleMap);
+
     // GeoJSON をマップに追加
     L.geoJSON(geojson, {
         style: function(feature) {
@@ -32,7 +86,7 @@ onMounted(async () => {
                 color: "gray",  // 境界線の色
                 weight: 2,
                 opacity: 0.7,
-                fillColor: feature!.properties.code === "360" ? "red" : "white",
+                fillColor: areaScaleMap.has(feature!.properties.code) ? getQuakeScaleColor(areaScaleMap.get(feature!.properties.code) || 0) : "white",
                 fillOpacity: 1
             };
         },
