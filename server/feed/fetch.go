@@ -2,7 +2,6 @@ package feed
 
 import (
 	"errors"
-	"fmt"
 	"io"
 	"net/http"
 
