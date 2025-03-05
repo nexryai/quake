@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { computed } from "vue";
 
-import {getQuakeScaleColor} from "@/color.ts";
+import { getQuakeScaleColor, getQuakeScaleColorText } from "@/color.ts";
 
 const props = defineProps<{
   scale: number
@@ -23,12 +23,13 @@ const getDisplayScale = (scale: number): string => {
 };
 
 const color = computed(() => getQuakeScaleColor(props.scale));
+const textColor = computed(() => getQuakeScaleColorText(props.scale));
 const displayScale = computed(() => getDisplayScale(props.scale));
 
 </script>
 
 <template>
-    <div class="quake-scale-icon" :style="{ backgroundColor: color }">
+    <div class="quake-scale-icon" :style="{ backgroundColor: color, color: textColor }">
         {{ displayScale }}
     </div>
 </template>
@@ -40,6 +41,7 @@ const displayScale = computed(() => getDisplayScale(props.scale));
     align-items: center;
     border-radius: 10px;
     font-size: 32px;
+    font-weight: bold;
     width: 64px;
     height: 64px;
 }
