@@ -2,6 +2,8 @@ package feed
 
 import (
 	"errors"
+	"fmt"
+	"io"
 	"net/http"
 
 	"github.com/mmcdole/gofeed"
@@ -14,7 +16,7 @@ func FetchFeed(url string) (*gofeed.Feed, error) {
 		return nil, err
 	}
 
-	requester := archer.SecureRequest{
+	requester := archer.SecureRequest {
 		Request:     req,
 		TimeoutSecs: 10,
 		MaxSize:     1024 * 1024 * 10,
@@ -34,4 +36,26 @@ func FetchFeed(url string) (*gofeed.Feed, error) {
 	}
 
 	return feed, nil
+}
+
+func FetchEventData(baseUrl string, eventID string) (io.Reader, error) {
+	url := baseUrl + eventID +".xml"
+
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return nil, err
+	}
+
+	requester := archer.SecureRequest {
+		Request:     req,
+		TimeoutSecs: 10,
+		MaxSize:     1024 * 1024 * 10,
+	}
+
+	resp, err := requester.Send()
+	if err != nil {
+		return nil, err
+	}
+
+	return resp.Body, nil
 }
