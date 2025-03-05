@@ -16,10 +16,10 @@ func main() {
 		fmt.Println(e)
 	}
 
-	data, err := controller.GetEventDetails((*events)[0])
+	data, err := controller.GetEventDetailsJson((*events)[0])
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Printf("%v", data)
+	fmt.Printf("%s", *data)
 }

@@ -1,17 +1,14 @@
 package controller
 
 import (
-	"errors"
-	"github.com/nexryai/quake/server/feed"
-	"io"
-	"strings"
-)
-
-import (
 	"encoding/json"
 	"encoding/xml"
+	"errors"
 	"fmt"
+	"github.com/nexryai/quake/server/feed"
+	"io"
 	"log"
+	"strings"
 
 	"github.com/nexryai/quake/server/converter"
 	"github.com/nexryai/quake/server/jmaseis"
@@ -21,7 +18,7 @@ const eventDataBaseUrl = "https://www.data.jma.go.jp/developer/xml/data/"
 const force = false
 const ignoreWarning = false
 
-func GetEventDetails(eventId string) (*jmaseis.Report, error) {
+func GetEventDetailsJson(eventId string) (*string, error) {
 	respReader, err := feed.FetchEventData(eventDataBaseUrl, eventId)
 	if err != nil {
 		return nil, err
@@ -63,7 +60,9 @@ func GetEventDetails(eventId string) (*jmaseis.Report, error) {
 			log.Fatalf("%s JSON conversion error: %#v", eventId, err)
 		}
 
-		fmt.Println(string(data))
+		jsonString := string(data)
+
+		return &(jsonString), nil
 	} else if strings.Contains(eventId, "_VXSE43_") {
 		// EEW
 		jmaEEW, err := converter.Vxse2EpspEEW(*report)
@@ -76,7 +75,9 @@ func GetEventDetails(eventId string) (*jmaseis.Report, error) {
 			return nil, err
 		}
 
-		fmt.Println(string(data))
+		jsonString := string(data)
+
+		return &(jsonString), nil
 	} else {
 		// 変換
 		jmaQuake, err := converter.Vxse2EpspQuake(*report)
@@ -107,8 +108,10 @@ func GetEventDetails(eventId string) (*jmaseis.Report, error) {
 			log.Fatalf("%s JSON conversion error: %#v", eventId, err)
 		}
 
-		fmt.Println(string(data))
+		jsonString := string(data)
+
+		return &(jsonString), nil
 	}
 
-	return report, nil
+	return nil, nil
 }
