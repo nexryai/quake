@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import L from "leaflet";
-import { onMounted } from "vue";
+import { ref, onMounted } from "vue";
 
 import "leaflet/dist/leaflet.css";
 import {getQuakeScaleColor} from "@/color.ts";
+import QuakeScaleIcon from "@/components/core/QuakeScaleIcon.vue";
 
 type EarthquakeData = {
     expire: null;
@@ -48,6 +49,10 @@ const fetchQuakeData = async (id: string): Promise<EarthquakeData> => {
     return await response.json() as EarthquakeData;
 };
 
+const quakeScale = ref(0);
+const magnitude = ref(0);
+const hypocenterLabel = ref("不明");
+
 onMounted(async () => {
     // 東京を中心に表示
 
@@ -61,6 +66,10 @@ onMounted(async () => {
     const geojson = await fetchMapData();
 
     const quakeData = await fetchQuakeData("20250304061539_0_VXSE53_010000");
+
+    quakeScale.value = quakeData.earthquake.maxScale;
+    magnitude.value = quakeData.earthquake.hypocenter.magnitude;
+    hypocenterLabel.value = quakeData.earthquake.hypocenter.name;
 
     // areaCodeごとの最大scaleを求める
     const areaScaleMap = new Map<string, number>();
@@ -116,6 +125,17 @@ onMounted(async () => {
 
 <template>
     <div id="map" style="width: 100%; height: 500px"></div>
+    <div class="quake-info">
+        <div class="scale">
+            <span class="scale-label">最大震度</span>
+            <QuakeScaleIcon class="scale-icon" :scale=quakeScale />
+        </div>
+
+        <div class="hypocenter">
+            <span class="hypocenter-label">震源 {{ hypocenterLabel }}</span> <br>
+            <span class="magnitude-label">M{{ magnitude }}</span>
+        </div>
+    </div>
 </template>
 
 <style scoped>
@@ -123,5 +143,37 @@ onMounted(async () => {
     width: 100%;
     height: 500px;
     border-radius: 10px;
+}
+
+.quake-info {
+    display: flex;
+    justify-content: space-between;
+
+    margin: 32px 0 0 12px;
+
+    & .scale {
+        display: flex;
+        align-items: center;
+
+        width: 180px;
+        justify-content: space-between;
+
+        & .scale-label {
+            font-size: 24px;
+        }
+    }
+
+    & .hypocenter {
+        text-align: right;
+
+        & .hypocenter-label {
+            font-size: 24px;
+        }
+
+        & .magnitude-label {
+            font-size: 20px;
+        }
+    }
+
 }
 </style>
