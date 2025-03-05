@@ -265,7 +265,7 @@ onMounted(async () => {
 </script>
 
 <template>
-    <div class="debug-warning">
+    <div class="debug-warning" v-if="isDebug">
         <span>DEBUG MODE - THIS IS DUMMY DATA</span>
     </div>
     <div id="map" style="width: 100%; height: 500px"></div>
