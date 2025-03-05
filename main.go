@@ -2,13 +2,12 @@ package main
 
 import (
 	"fmt"
-	"github.com/nexryai/quake/server/controller"
 
-	"github.com/nexryai/quake/server/jmafeed"
+	"github.com/nexryai/quake/server/controller"
 )
 
 func main() {
-	events, _ := jmafeed.GetJMAEvents()
+	events, _ := controller.GetJMAEvents()
 
 	fmt.Printf("Total: %d\n", len(*events))
 
