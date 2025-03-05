@@ -99,6 +99,16 @@ onMounted(async () => {
             return L.circleMarker(latlng, { radius: 8, color: "red" });
         },
     }).addTo(map);
+
+    L.marker({
+        lat: quakeData.earthquake.hypocenter.latitude,
+        lng: quakeData.earthquake.hypocenter.longitude
+    }, { icon: L.icon({
+        iconUrl: "/b4a90f43-d844-fd77-8f28-221910d52e3b.png",
+        iconSize: [40, 40],
+        iconAnchor: [20, 20],
+        popupAnchor: [0, -40]
+    })}).addTo(map);
 });
 </script>
 
