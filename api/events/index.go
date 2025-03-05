@@ -21,8 +21,10 @@ func Handler(w http.ResponseWriter, r *http.Request) {
 
 	res, err := json.Marshal(data)
 	if err != nil {
-		panic(err)
+		w.WriteHeader(500)
+		return
 	}
 
+	w.Header().Set("Content-Type", "application/json")
 	fmt.Fprintf(w, "%s", res)
 }
