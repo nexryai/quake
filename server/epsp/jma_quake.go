@@ -34,10 +34,12 @@ type Hypocenter struct {
 }
 
 type Point struct {
-	Pref   string `json:"pref"`
-	Addr   string `json:"addr"`
-	Scale  int    `json:"scale"`
-	IsArea bool   `json:"isArea"`
+	Code     string `json:"code"`
+	AreaCode string `json:"areaCode"`
+	Pref     string `json:"pref"`
+	Addr     string `json:"addr"`
+	Scale    int    `json:"scale"`
+	IsArea   bool   `json:"isArea"`
 }
 
 type Comments struct {

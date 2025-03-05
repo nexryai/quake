@@ -431,10 +431,12 @@ func generatePoints(vxse jmaseis.Report) []epsp.Point {
 		for _, pref := range vxse.Body.Intensity.Observation.Pref {
 			for _, area := range pref.Area {
 				points = append(points, epsp.Point{
-					Pref:   pref.Name,
-					Addr:   area.Name,
-					IsArea: true,
-					Scale:  scale(area.MaxInt),
+					Code:     area.Code,
+					AreaCode: area.Code,
+					Pref:     pref.Name,
+					Addr:     area.Name,
+					IsArea:   true,
+					Scale:    scale(area.MaxInt),
 				})
 			}
 		}
@@ -447,10 +449,12 @@ func generatePoints(vxse jmaseis.Report) []epsp.Point {
 				for _, city := range area.City {
 					for _, station := range city.IntensityStation {
 						points = append(points, epsp.Point{
-							Pref:   pref.Name,
-							Addr:   strings.ReplaceAll(station.Name, "＊", ""),
-							IsArea: false,
-							Scale:  scale(station.Int),
+							Code:     city.Code,
+							AreaCode: area.Code,
+							Pref:     pref.Name,
+							Addr:     strings.ReplaceAll(station.Name, "＊", ""),
+							IsArea:   false,
+							Scale:    scale(station.Int),
 						})
 					}
 				}
