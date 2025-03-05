@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"errors"
 	"github.com/nexryai/quake/server/feed"
 	"io"
 	"strings"
@@ -84,18 +85,20 @@ func GetEventDetails(eventId string) (*jmaseis.Report, error) {
 		}
 
 		// 検証
-		errors := converter.ValidateJMAQuake(eventId, report, jmaQuake)
-		for _, err := range errors {
-			_, ok := err.(converter.ValidationError)
+		validationErrors := converter.ValidateJMAQuake(eventId, report, jmaQuake)
+		for _, err := range validationErrors {
+			var validationError converter.ValidationError
+			ok := errors.As(err, &validationError)
 			if ok && !force {
-				return nil, fmt.Errorf("%s has validation errors: %#v", eventId, errors)
+				return nil, fmt.Errorf("%s has validation errors: %#v", eventId, validationErrors)
 			}
 		}
 
-		for _, err := range errors {
-			_, ok := err.(converter.ValidationWarning)
+		for _, err := range validationErrors {
+			var validationWarning converter.ValidationWarning
+			ok := errors.As(err, &validationWarning)
 			if ok && !force && !ignoreWarning {
-				return nil, fmt.Errorf("%s has validation errors: %#v", eventId, errors)
+				return nil, fmt.Errorf("%s has validation errors: %#v", eventId, validationErrors)
 			}
 		}
 
