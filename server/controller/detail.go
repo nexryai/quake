@@ -37,7 +37,7 @@ func GetEventDetailsJson(eventId string, isDebug bool) (*string, error) {
 		return nil, err
 	}
 
-	if strings.Contains(eventId, "_VTSE41_") {
+	if strings.Contains(eventId, "_VTSE41") {
 		// 津波
 		jmaTsunami, err := converter.Vtse2Epsp(*report)
 		if err != nil {
@@ -68,7 +68,7 @@ func GetEventDetailsJson(eventId string, isDebug bool) (*string, error) {
 		jsonString := string(data)
 
 		return &(jsonString), nil
-	} else if strings.Contains(eventId, "_VXSE43_") {
+	} else if strings.Contains(eventId, "_VXSE43") {
 		// EEW
 		jmaEEW, err := converter.Vxse2EpspEEW(*report)
 		if err != nil {
