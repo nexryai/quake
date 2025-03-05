@@ -13,8 +13,9 @@ type Events struct {
 }
 
 func Handler(w http.ResponseWriter, r *http.Request) {
-	events, _ := controller.GetJMAEvents()
+	w.Header().Set("Access-Control-Allow-Origin", "*")
 
+	events, _ := controller.GetJMAEvents()
 	data := &Events {
 		Events: *events,
 	}

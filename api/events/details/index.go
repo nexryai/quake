@@ -8,6 +8,8 @@ import (
 )
 
 func Handler(w http.ResponseWriter, r *http.Request) {
+	w.Header().Set("Access-Control-Allow-Origin", "*")
+
 	queryParams := r.URL.Query().Get("id")
 	if queryParams == "" {
 		w.WriteHeader(400)
