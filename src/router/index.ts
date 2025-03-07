@@ -1,20 +1,17 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import HomeView from "../views/HomeView.vue";
-import TsunamiView from "../views/TsunamiView.vue";
-
 const router = createRouter({
     history: createWebHistory(import.meta.env.BASE_URL),
     routes: [
         {
             path: "/",
             name: "home",
-            component: HomeView,
+            component: () => import("../views/HomeView.vue"),
         },
         {
             path: "/tsunami",
             name: "tsunami",
-            component: TsunamiView,
+            component: () => import("../views/TsunamiView.vue"),
         },
         {
             path: "/about",
