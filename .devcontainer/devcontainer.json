@@ -1,0 +1,37 @@
+{
+    "name": "Quake Dev",
+    "image": "node:22",
+    "features": {
+        "ghcr.io/devcontainers-extra/features/pnpm:2": {},
+        "ghcr.io/devcontainers/features/go:1": {
+            "version": "latest"
+        }
+    },
+    "runArgs": [
+        "--name",
+        "quake-dev",
+        "-p",
+        "127.0.0.1:5173:5173",
+        "--user",
+        "node"
+    ],
+    "workspaceMount": "source=${localWorkspaceFolder},target=/workspace,type=bind",
+    "workspaceFolder": "/workspace",
+    "remoteUser": "node",
+    "overrideCommand": true,
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "Vue.volar",
+                "dbaeumer.vscode-eslint",
+                "EditorConfig.EditorConfig",
+                "golang.go"
+            ],
+            "settings": {
+                "editor.linkedEditing": true,
+                "editor.formatOnPaste": true,
+                "editor.formatOnSave": true
+            }
+        }
+    }
+}
