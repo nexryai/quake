@@ -30,7 +30,8 @@
             "settings": {
                 "editor.linkedEditing": true,
                 "editor.formatOnPaste": true,
-                "editor.formatOnSave": true
+                "editor.formatOnSave": true,
+                "vue.server.hybridMode": true
             }
         }
     }
