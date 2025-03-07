@@ -18,7 +18,12 @@ onMounted(async () => {
 
     const resp = await fetch("https://quake-jade.vercel.app/api/events");
     const events = (await resp.json() as { events: string[] }).events;
-    eventId.value = events[0];
+    // IDに_VXSE51または_VXSE53が含まれる最初のイベントを取得
+    eventId.value = events.find((id) => id.includes("_VXSE51") || id.includes("_VXSE53")) ?? "";
+    if (!eventId.value) {
+        console.error("No event found");
+        return;
+    }
 
     isLoading.value = false;
 });

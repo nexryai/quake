@@ -28,8 +28,8 @@ func GetJMAEvents() (*[]string, error) {
 
 	// リアルタイムフィードから追加
 	for _, item := range realtimeFeed.Items {
-		// VXSE51（震度速報）または VXSE53（震度・震源の情報）のみを扱う
-		if (strings.Contains(item.Link, "_VXSE51_") || strings.Contains(item.Link, "_VXSE53_")) {
+		// 対応してる情報のみを扱う
+		if strings.Contains(item.Link, "_VXSE51_") || strings.Contains(item.Link, "_VXSE53_") || strings.Contains(item.Link, "_VTSE41") {
 			// ID抽出
 			e := strings.TrimSuffix(strings.TrimPrefix(item.Link, "https://www.data.jma.go.jp/developer/xml/data/"), ".xml")
 			events = append(events, e)
@@ -38,8 +38,7 @@ func GetJMAEvents() (*[]string, error) {
 
 	// 長期フィードから追加
 	for _, item := range longtermFeed.Items {
-		// VXSE51（震度速報）または VXSE53（震度・震源の情報）のみを扱う
-		if (strings.Contains(item.Link, "_VXSE51_") || strings.Contains(item.Link, "_VXSE53_")) {
+		if strings.Contains(item.Link, "_VXSE51_") || strings.Contains(item.Link, "_VXSE53_") || strings.Contains(item.Link, "_VTSE41") {
 			// ID抽出
 			e := strings.TrimSuffix(strings.TrimPrefix(item.Link, "https://www.data.jma.go.jp/developer/xml/data/"), ".xml")
 
@@ -53,7 +52,6 @@ func GetJMAEvents() (*[]string, error) {
 			events = append(events, e)
 		}
 	}
-
 
 	return &events, nil
 }
