@@ -5,6 +5,7 @@ import { ref, onMounted, computed } from "vue";
 import "leaflet/dist/leaflet.css";
 import { getQuakeScaleColor } from "@/color.ts";
 import QuakeScaleIcon from "@/components/core/QuakeScaleIcon.vue";
+import UndrawError from "@/components/images/UndrawError.vue";
 
 const props = defineProps<{
     eventId: string
@@ -64,19 +65,6 @@ const tsunamiStatusStyle = computed(() => {
     }
 });
 
-const fetchMapData = async () => {
-    const response = await fetch("/JP20250304.geojson");
-    return await response.json();
-};
-
-const fetchQuakeData = async (id: string, isDebug = false): Promise<EarthquakeData> => {
-    const response = await fetch(!isDebug
-        ? `https://quake-jade.vercel.app/api/events/details?id=${id}`
-        : `https://quake-jade.vercel.app/api/events/details?id=${id}&debug=dummy`
-    );
-    return await response.json() as EarthquakeData;
-};
-
 let isForeignQuake = false;
 
 const isDummyData = ref(false);
@@ -87,7 +75,33 @@ const tsunamiStatus = ref(TsunamiStatus.UNKNOWN);
 const magnitude = ref<number | string>(0);
 const hypocenterLabel = ref("不明");
 
+const fatalError = ref(false);
 const isLoading = ref(true);
+
+const fetchMapData = async () => {
+    const response = await fetch("/JP20250304.geojson");
+    return await response.json();
+};
+
+const fetchQuakeData = async (id: string, isDebug = false): Promise<EarthquakeData> => {
+    try {
+        const response = await fetch(!isDebug
+            ? `https://quake-jade.vercel.app/api/events/details?id=${id}`
+            : `https://quake-jade.vercel.app/api/events/details?id=${id}&debug=dummy`
+        );
+
+        if (response.status != 200) {
+            throw new Error(`Status code was not 200: ${response.status}`);
+        }
+
+        return await response.json() as EarthquakeData;
+    } catch (e) {
+        fatalError.value = true;
+        console.error(`Failed to fetch quake data: ${e}`);
+
+        throw("Abort");
+    }
+};
 
 onMounted(async () => {
     const dispHypocenter = !props.eventId.includes("_VXSE51");
@@ -270,22 +284,28 @@ onMounted(async () => {
     <div class="debug-warning" v-if="isDebug">
         <span>DEBUG MODE - THIS IS DUMMY DATA</span>
     </div>
-    <div id="map" style="width: 100%; height: 500px"></div>
-    <div class="quake-info">
-        <div class="scale">
-            <span class="scale-label">最大震度</span>
-            <QuakeScaleIcon class="scale-icon" :scale=quakeScale />
-        </div>
-
-        <div class="hypocenter">
-            <span class="hypocenter-label">震源 {{ hypocenterLabel }}</span> <br>
-            <span class="time-label">{{ quakeDateTimeLabel }}</span><span class="magnitude-label">M{{ magnitude
-            }}</span>
-        </div>
+    <div class="fatal-error" v-if="fatalError">
+        <UndrawError />
+        <p>FATAL ERROR</p>
     </div>
-    <div class="quake-info" v-if="!isLoading">
-        <div class="tsunami-status" :style="tsunamiStatusStyle">
-            <span class="tsunami-label">{{ tsunamiStatusLabel }}</span>
+    <div v-else>
+        <div id="map" style="width: 100%; height: 500px"></div>
+        <div class="quake-info">
+            <div class="scale">
+                <span class="scale-label">最大震度</span>
+                <QuakeScaleIcon class="scale-icon" :scale=quakeScale />
+            </div>
+
+            <div class="hypocenter">
+                <span class="hypocenter-label">震源 {{ hypocenterLabel }}</span> <br>
+                <span class="time-label">{{ quakeDateTimeLabel }}</span><span class="magnitude-label">M{{ magnitude
+                    }}</span>
+            </div>
+        </div>
+        <div class="quake-info" v-if="!isLoading">
+            <div class="tsunami-status" :style="tsunamiStatusStyle">
+                <span class="tsunami-label">{{ tsunamiStatusLabel }}</span>
+            </div>
         </div>
     </div>
 </template>
@@ -305,6 +325,18 @@ onMounted(async () => {
     width: 100%;
     height: 500px;
     border-radius: 10px;
+}
+
+.fatal-error {
+    width: 320px;
+    padding: 42px;
+    margin: 100px auto 12px auto;
+    text-align: center;
+
+    & p {
+        margin-top: 32px;
+        font-size: 18px;
+    }
 }
 
 .quake-info {
