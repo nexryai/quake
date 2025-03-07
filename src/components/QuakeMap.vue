@@ -75,8 +75,10 @@ const tsunamiStatus = ref(TsunamiStatus.UNKNOWN);
 const magnitude = ref<number | string>(0);
 const hypocenterLabel = ref("不明");
 
+const mapError = ref(false);
 const fatalError = ref(false);
 const isLoading = ref(true);
+const mapIsLoading = ref(false);
 
 const fetchMapData = async () => {
     const response = await fetch("/JP20250304.geojson");
@@ -201,81 +203,89 @@ onMounted(async () => {
         }
     });
 
+    mapIsLoading.value = true;
     isLoading.value = false;
 
-    const map = L.map("map", {
-        attributionControl: false,
-        zoomControl: false
-    }).setView([quakeData.earthquake.hypocenter.latitude, quakeData.earthquake.hypocenter.longitude], 7);
+    try {
+        const map = L.map("map", {
+            attributionControl: false,
+            zoomControl: false
+        }).setView([quakeData.earthquake.hypocenter.latitude, quakeData.earthquake.hypocenter.longitude], 7);
 
-    if (isForeignQuake) {
-        L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-            attribution: "© OpenStreetMap contributors",
-        }).addTo(map);
-    } else {
+        if (isForeignQuake) {
+            L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                attribution: "© OpenStreetMap contributors",
+            }).addTo(map);
+        } else {
         // GeoJSON をマップに追加
-        const geoJsonLayer = L.geoJSON(geojson, {
-            style: function (feature) {
-                return {
-                    color: "gray",  // 境界線の色
-                    weight: 2,
-                    opacity: 0.7,
-                    fillColor: areaScaleMap.has(feature!.properties.code) ? getQuakeScaleColor(areaScaleMap.get(feature!.properties.code) || 0) : "white",
-                    fillOpacity: 1
-                };
-            },
-            onEachFeature: (feature, layer) => {
-                if (feature.properties && feature.properties.name) {
-                    layer.bindPopup(feature.properties.name);
+            const geoJsonLayer = L.geoJSON(geojson, {
+                style: function (feature) {
+                    return {
+                        color: "gray",  // 境界線の色
+                        weight: 2,
+                        opacity: 0.7,
+                        fillColor: areaScaleMap.has(feature!.properties.code) ? getQuakeScaleColor(areaScaleMap.get(feature!.properties.code) || 0) : "white",
+                        fillOpacity: 1
+                    };
+                },
+                onEachFeature: (feature, layer) => {
+                    if (feature.properties && feature.properties.name) {
+                        layer.bindPopup(feature.properties.name);
+                    }
+                },
+                pointToLayer: (feature, latlng) => {
+                    return L.circleMarker(latlng, { radius: 8, color: "red" });
+                },
+            }).addTo(map);
+
+            if (!dispHypocenter) {
+                let maxScale = -Infinity;
+                let targetCode = null;
+                let targetCenter = null;
+
+                // 一番スケールが高い地域の `code` を取得
+                for (const [code, scale] of areaScaleMap.entries()) {
+                    if (scale > maxScale) {
+                        maxScale = scale;
+                        targetCode = code;
+                    }
                 }
-            },
-            pointToLayer: (feature, latlng) => {
-                return L.circleMarker(latlng, { radius: 8, color: "red" });
-            },
-        }).addTo(map);
 
-        if (!dispHypocenter) {
-            let maxScale = -Infinity;
-            let targetCode = null;
-            let targetCenter = null;
-
-            // 一番スケールが高い地域の `code` を取得
-            for (const [code, scale] of areaScaleMap.entries()) {
-                if (scale > maxScale) {
-                    maxScale = scale;
-                    targetCode = code;
-                }
-            }
-
-            // 対象エリアの中心を取得
-            geoJsonLayer.eachLayer(layer => {
+                // 対象エリアの中心を取得
+                geoJsonLayer.eachLayer(layer => {
                 // @ts-ignore
-                if (layer.feature.properties.code === targetCode) {
+                    if (layer.feature.properties.code === targetCode) {
                     // @ts-ignore
-                    targetCenter = layer.getBounds().getCenter();
-                }
-            });
+                        targetCenter = layer.getBounds().getCenter();
+                    }
+                });
 
-            // ズーム倍率を手動で設定
-            if (targetCenter) {
-                const zoomLevel = 6.5; // 任意のズームレベルに変更
-                map.setView(targetCenter, zoomLevel);
+                // ズーム倍率を手動で設定
+                if (targetCenter) {
+                    const zoomLevel = 6.5; // 任意のズームレベルに変更
+                    map.setView(targetCenter, zoomLevel);
+                }
             }
         }
-    }
 
-    if (dispHypocenter) {
-        L.marker({
-            lat: quakeData.earthquake.hypocenter.latitude,
-            lng: quakeData.earthquake.hypocenter.longitude
-        }, {
-            icon: L.icon({
-                iconUrl: "/b4a90f43-d844-fd77-8f28-221910d52e3b.png",
-                iconSize: [40, 40],
-                iconAnchor: [20, 20],
-                popupAnchor: [0, -40]
-            })
-        }).addTo(map);
+        if (dispHypocenter) {
+            L.marker({
+                lat: quakeData.earthquake.hypocenter.latitude,
+                lng: quakeData.earthquake.hypocenter.longitude
+            }, {
+                icon: L.icon({
+                    iconUrl: "/b4a90f43-d844-fd77-8f28-221910d52e3b.png",
+                    iconSize: [40, 40],
+                    iconAnchor: [20, 20],
+                    popupAnchor: [0, -40]
+                })
+            }).addTo(map);
+        }
+    } catch(e) {
+        mapError.value = true;
+        console.error(`Failed to load map: ${e}`);
+    } finally {
+        mapIsLoading.value = false;
     }
 });
 </script>
@@ -289,8 +299,18 @@ onMounted(async () => {
         <p>FATAL ERROR</p>
     </div>
     <div v-else>
-        <div id="map" style="width: 100%; height: 500px"></div>
-        <div class="quake-info">
+        <div id="map" style="width: 100%; height: 500px">
+            <div class="loading" v-if="isLoading || mapIsLoading">
+                <svg xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-loader-3"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 12a9 9 0 0 0 9 9a9 9 0 0 0 9 -9a9 9 0 0 0 -9 -9" /><path d="M17 12a5 5 0 1 0 -5 5" /></svg>
+                <p v-if="isLoading">LOADING...</p>
+                <p v-else-if="mapIsLoading">マップ準備中...</p>
+            </div>
+            <div class="map-error" v-if="mapError">
+                <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-map-x"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 19.5l-5 -2.5l-6 3v-13l6 -3l6 3l6 -3v9" /><path d="M9 4v13" /><path d="M15 7v6.5" /><path d="M22 22l-5 -5" /><path d="M17 22l5 -5" /></svg>
+                <p>マップのロードに失敗しました</p>
+            </div>
+        </div>
+        <div class="quake-info" v-if="!isLoading">
             <div class="scale">
                 <span class="scale-label">最大震度</span>
                 <QuakeScaleIcon class="scale-icon" :scale=quakeScale />
@@ -325,6 +345,29 @@ onMounted(async () => {
     width: 100%;
     height: 500px;
     border-radius: 10px;
+
+    & .loading {
+        z-index: 1000;
+        width: 200px;
+        margin: 200px auto 12px auto;
+        text-align: center;
+
+        & svg {
+            display: inline-block;
+            animation: rotate-z 2s linear infinite;
+        }
+    }
+
+    & .map-error {
+        position: relative;
+        z-index: 9999;
+        width: 100%;
+        height: 100%;
+        padding-top: 200px;
+        text-align: center;
+        background: rgba(230, 230, 230, 0.665);
+        backdrop-filter: blur(18px);
+    }
 }
 
 .fatal-error {
@@ -383,5 +426,10 @@ onMounted(async () => {
         }
     }
 
+}
+
+@keyframes rotate-z {
+  from { transform: rotateZ(0deg); }
+  to { transform: rotateZ(360deg); }
 }
 </style>
