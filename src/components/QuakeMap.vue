@@ -53,14 +53,14 @@ enum TsunamiStatus {
 
 const tsunamiStatusStyle = computed(() => {
     switch (tsunamiStatus.value) {
-    case TsunamiStatus.WARNING:
-        return { backgroundColor: "#b20000", color: "white"};
-    case TsunamiStatus.NOTICE:
-        return { backgroundColor: "#FFD700", color: "black" };
-    case TsunamiStatus.NONE:
-        return { backgroundColor: "#f6f6f6", color: "black" };
-    default:
-        return { backgroundColor: "#727272", color: "white" };
+        case TsunamiStatus.WARNING:
+            return { backgroundColor: "#b20000", color: "white" };
+        case TsunamiStatus.NOTICE:
+            return { backgroundColor: "#FFD700", color: "black" };
+        case TsunamiStatus.NONE:
+            return { backgroundColor: "#f6f6f6", color: "black" };
+        default:
+            return { backgroundColor: "#727272", color: "white" };
     }
 });
 
@@ -107,30 +107,30 @@ onMounted(async () => {
     //quakeData.earthquake.domesticTsunami = "Watch";
 
     switch (quakeData.earthquake.domesticTsunami) {
-    case "None":
-        tsunamiStatusLabel.value = "この地震による津波の心配はありません";
-        tsunamiStatus.value = TsunamiStatus.NONE;
-        break;
-    case "Unknown":
-        tsunamiStatusLabel.value = "津波への影響は不明です";
-        break;
-    case "Checking":
-        tsunamiStatusLabel.value = "津波への影響は調査中です。注意して行動してください。";
-        break;
-    case "NonEffective":
-        tsunamiStatusLabel.value = "若干の海面変動が予想されますが、被害の心配はありません。";
-        tsunamiStatus.value = TsunamiStatus.NOTICE;
-        break;
-    case "Watch":
-        tsunamiStatusLabel.value = "津波注意報が発表されました";
-        tsunamiStatus.value = TsunamiStatus.WARNING;
-        break;
-    case "Warning":
-        tsunamiStatusLabel.value = "津波警報等が発表されました";
-        tsunamiStatus.value = TsunamiStatus.WARNING;
-        break;
-    default: tsunamiStatusLabel.value = "津波情報の取得に失敗しました";
-        tsunamiStatus.value = TsunamiStatus.UNKNOWN;
+        case "None":
+            tsunamiStatusLabel.value = "この地震による津波の心配はありません";
+            tsunamiStatus.value = TsunamiStatus.NONE;
+            break;
+        case "Unknown":
+            tsunamiStatusLabel.value = "津波への影響は不明です";
+            break;
+        case "Checking":
+            tsunamiStatusLabel.value = "津波への影響は調査中です。注意して行動してください。";
+            break;
+        case "NonEffective":
+            tsunamiStatusLabel.value = "若干の海面変動が予想されますが、被害の心配はありません。";
+            tsunamiStatus.value = TsunamiStatus.NOTICE;
+            break;
+        case "Watch":
+            tsunamiStatusLabel.value = "津波注意報が発表されました";
+            tsunamiStatus.value = TsunamiStatus.WARNING;
+            break;
+        case "Warning":
+            tsunamiStatusLabel.value = "津波警報等が発表されました";
+            tsunamiStatus.value = TsunamiStatus.WARNING;
+            break;
+        default: tsunamiStatusLabel.value = "津波情報の取得に失敗しました";
+            tsunamiStatus.value = TsunamiStatus.UNKNOWN;
     }
 
     // 国内でWarningがあるなら海外からの津波は無視
@@ -140,38 +140,38 @@ onMounted(async () => {
         }
 
         switch (quakeData.earthquake.foreignTsunami) {
-        case "Checking":
-            if (tsunamiStatus.value != TsunamiStatus.NOTICE) {
-                // NOTICEレベルの通知があるならそっちを優先する
-                tsunamiStatusLabel.value = "津波への影響は調査中です。";
-            }
-            break;
-        case "NonEffectiveNearby":
-            tsunamiStatusLabel.value = "震源の近傍で小さな津波が予想されますが、被害の心配はありません。";
-            tsunamiStatus.value = TsunamiStatus.NOTICE;
-            break;
-        case "WarningPacific":
-            tsunamiStatusLabel.value = "太平洋で津波が予想されます";
-            tsunamiStatus.value = TsunamiStatus.WARNING;
-            break;
-        case "WarningPacificWide":
-            tsunamiStatusLabel.value = "太平洋の広域で津波が予想されます";
-            tsunamiStatus.value = TsunamiStatus.WARNING;
-            break;
-        case "WarningIndian":
-            tsunamiStatusLabel.value = "インド洋で津波が予想されます";
-            tsunamiStatus.value = TsunamiStatus.WARNING;
-            break;
-        case "WarningIndianWide":
-            tsunamiStatusLabel.value = "インド洋の広域で津波が予想されます";
-            tsunamiStatus.value = TsunamiStatus.WARNING;
-            break;
-        case "Potential":
-            tsunamiStatusLabel.value = "この規模の地震では津波の可能性があります";
-            tsunamiStatus.value = TsunamiStatus.NOTICE;
-            break;
-        default: tsunamiStatusLabel.value = "津波情報（海外）の取得に失敗しました";
-            tsunamiStatus.value = TsunamiStatus.NOTICE;
+            case "Checking":
+                if (tsunamiStatus.value != TsunamiStatus.NOTICE) {
+                    // NOTICEレベルの通知があるならそっちを優先する
+                    tsunamiStatusLabel.value = "津波への影響は調査中です。";
+                }
+                break;
+            case "NonEffectiveNearby":
+                tsunamiStatusLabel.value = "震源の近傍で小さな津波が予想されますが、被害の心配はありません。";
+                tsunamiStatus.value = TsunamiStatus.NOTICE;
+                break;
+            case "WarningPacific":
+                tsunamiStatusLabel.value = "太平洋で津波が予想されます";
+                tsunamiStatus.value = TsunamiStatus.WARNING;
+                break;
+            case "WarningPacificWide":
+                tsunamiStatusLabel.value = "太平洋の広域で津波が予想されます";
+                tsunamiStatus.value = TsunamiStatus.WARNING;
+                break;
+            case "WarningIndian":
+                tsunamiStatusLabel.value = "インド洋で津波が予想されます";
+                tsunamiStatus.value = TsunamiStatus.WARNING;
+                break;
+            case "WarningIndianWide":
+                tsunamiStatusLabel.value = "インド洋の広域で津波が予想されます";
+                tsunamiStatus.value = TsunamiStatus.WARNING;
+                break;
+            case "Potential":
+                tsunamiStatusLabel.value = "この規模の地震では津波の可能性があります";
+                tsunamiStatus.value = TsunamiStatus.NOTICE;
+                break;
+            default: tsunamiStatusLabel.value = "津波情報（海外）の取得に失敗しました";
+                tsunamiStatus.value = TsunamiStatus.NOTICE;
         }
     }
 
@@ -201,7 +201,7 @@ onMounted(async () => {
     } else {
         // GeoJSON をマップに追加
         const geoJsonLayer = L.geoJSON(geojson, {
-            style: function(feature) {
+            style: function (feature) {
                 return {
                     color: "gray",  // 境界線の色
                     weight: 2,
@@ -254,12 +254,14 @@ onMounted(async () => {
         L.marker({
             lat: quakeData.earthquake.hypocenter.latitude,
             lng: quakeData.earthquake.hypocenter.longitude
-        }, { icon: L.icon({
-            iconUrl: "/b4a90f43-d844-fd77-8f28-221910d52e3b.png",
-            iconSize: [40, 40],
-            iconAnchor: [20, 20],
-            popupAnchor: [0, -40]
-        })}).addTo(map);
+        }, {
+            icon: L.icon({
+                iconUrl: "/b4a90f43-d844-fd77-8f28-221910d52e3b.png",
+                iconSize: [40, 40],
+                iconAnchor: [20, 20],
+                popupAnchor: [0, -40]
+            })
+        }).addTo(map);
     }
 });
 </script>
@@ -277,7 +279,8 @@ onMounted(async () => {
 
         <div class="hypocenter">
             <span class="hypocenter-label">震源 {{ hypocenterLabel }}</span> <br>
-            <span class="time-label">{{ quakeDateTimeLabel }}</span><span class="magnitude-label">M{{ magnitude }}</span>
+            <span class="time-label">{{ quakeDateTimeLabel }}</span><span class="magnitude-label">M{{ magnitude
+            }}</span>
         </div>
     </div>
     <div class="quake-info" v-if="!isLoading">

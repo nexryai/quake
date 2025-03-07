@@ -37,7 +37,7 @@ export default defineConfigWithVueTs(
             "@typescript-eslint/no-unused-expressions": "off",
             "@typescript-eslint/ban-ts-comment": "off",
             "@typescript-eslint/no-explicit-any": "off",
-            "indent": ["error", 4],
+            "indent": ["error", 4, { "SwitchCase": 1 }],
             "quotes": ["error", "double"],
             "semi": ["error", "always"],
             "import/no-cycle": "error",
