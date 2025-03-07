@@ -25,7 +25,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <main>
-    <QuakeMap v-if=!isLoading :is-debug="isDebug" :event-id="eventId" />
-  </main>
+    <main>
+        <QuakeMap v-if=!isLoading :is-debug="isDebug" :event-id="eventId" />
+    </main>
 </template>
