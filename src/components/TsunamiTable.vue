@@ -260,14 +260,24 @@ onMounted(async () => {
     }
 
     & .grade {
-        width: 500px;
+        width: 600px;
         margin-bottom: 16px;
 
+        @media (max-width: 650px) {
+            width: 100%;
+        }
+
         & .grade-areas {
+            margin-left: 12px;
+
             & .area {
-                display: flex;
-                justify-content: space-between;
-                margin-bottom: 16px;
+                margin-bottom: 40px;
+
+                @media (min-width: 650px) {
+                    display: flex;
+                    justify-content: space-between;
+                    margin-bottom: 16px;
+                }
 
                 & .area-name {
                     & .important {
@@ -327,5 +337,9 @@ onMounted(async () => {
     & h3 {
         margin: 8px 0;
     }
+}
+
+@media (min-width: 1024px) {
+
 }
 </style>
