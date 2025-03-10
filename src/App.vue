@@ -43,6 +43,9 @@ header {
         & .item {
             margin-right: 8px;
             padding: 12px;
+            transition: 0.2s;
+            /* これがないとtransitionが不自然になる */
+            border-bottom: solid transparent 1px;
         }
 
         & .active {
@@ -54,6 +57,10 @@ header {
 
     & .header-right {
         margin: 1rem;
+
+        & .item {
+            transition: 0.2s;
+        }
 
         & .active {
             color: black;
