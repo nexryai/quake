@@ -71,6 +71,7 @@ func generateAreas(vtse jmaseis.Report) []epsp.Area {
 	for _, item := range vtse.Body.Tsunami.Forecast.Item {
 		if grade(item.Category.Kind) != "" {
 			areas = append(areas, epsp.Area{
+				Code:        item.Area.Code,
 				Name:        item.Area.Name,
 				Grade:       grade(item.Category.Kind),
 				Immediate:   immediate(item.FirstHeight),

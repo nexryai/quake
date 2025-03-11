@@ -15,6 +15,7 @@ type TsunamiIssue struct {
 }
 
 type Area struct {
+	Code        string      `json:"code"`
 	Name        string      `json:"name"`
 	Grade       string      `json:"grade"`
 	Immediate   bool        `json:"immediate"`
