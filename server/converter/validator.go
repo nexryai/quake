@@ -5,8 +5,8 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/nexryai/quake/server/epsp"
-	"github.com/nexryai/quake/server/jmaseis"
+	"github.com/nexryai/polyxia/server/epsp"
+	"github.com/nexryai/polyxia/server/jmaseis"
 )
 
 type ValidationWarning string

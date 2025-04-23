@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 
-	"github.com/nexryai/quake/server/controller"
+	"github.com/nexryai/polyxia/server/controller"
 )
 
 func main() {

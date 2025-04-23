@@ -5,13 +5,13 @@ import (
 	"encoding/xml"
 	"errors"
 	"fmt"
-	"github.com/nexryai/quake/server/feed"
+	"github.com/nexryai/polyxia/server/feed"
 	"io"
 	"log"
 	"strings"
 
-	"github.com/nexryai/quake/server/converter"
-	"github.com/nexryai/quake/server/jmaseis"
+	"github.com/nexryai/polyxia/server/converter"
+	"github.com/nexryai/polyxia/server/jmaseis"
 )
 
 const eventDataBaseUrl = "https://www.data.jma.go.jp/developer/xml/data/"
@@ -21,7 +21,7 @@ const ignoreWarning = false
 func GetEventDetailsJson(eventId string, isDebug bool) (*string, error) {
 	baseUrl := eventDataBaseUrl
 	if isDebug {
-		baseUrl = "https://raw.githubusercontent.com/nexryai/quake/main/test/examples/"
+		baseUrl = "https://raw.githubusercontent.com/nexryai/polyxia/main/test/examples/"
 	}
 
 	respReader, err := feed.FetchEventData(baseUrl, eventId)

@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/nexryai/quake/server/feed"
+	"github.com/nexryai/polyxia/server/feed"
 )
 
 const realtimeFeedUrl = "https://www.data.jma.go.jp/developer/xml/feed/eqvol.xml"

@@ -1,4 +1,4 @@
-module github.com/nexryai/quake
+module github.com/nexryai/polyxia
 
 go 1.23
 

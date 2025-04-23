@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/nexryai/quake/server/controller"
+	"github.com/nexryai/polyxia/server/controller"
 )
 
 type Events struct {
