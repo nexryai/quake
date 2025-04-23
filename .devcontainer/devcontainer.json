@@ -29,8 +29,9 @@
             ],
             "settings": {
                 "editor.linkedEditing": true,
-                "editor.formatOnPaste": true,
-                "editor.formatOnSave": true,
+                /* FIXME: 本当は使いたいけどやたら改行してきてキモいので無効化する */
+                "editor.formatOnPaste": false,
+                "editor.formatOnSave": false,
                 "vue.server.hybridMode": true,
                 "html.format.wrapLineLength": 0
             }
