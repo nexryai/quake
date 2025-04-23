@@ -12,35 +12,35 @@ const props = defineProps<{
 
 // 津波予報
 type TsunamiData = {
-  expire: string | null;
-  issue: TsunamiIssue;
-  cancelled: boolean;
-  areas: Area[];
+    expire: string | null;
+    issue: TsunamiIssue;
+    cancelled: boolean;
+    areas: Area[];
 };
 
 type TsunamiIssue = {
-  source: string;
-  time: string;
-  type: string;
+    source: string;
+    time: string;
+    type: string;
 };
 
 type Area = {
-  code: string,
-  name: string;
-  grade: TsunamiGrade;
-  immediate: boolean;
-  firstHeight: FirstHeight;
-  maxHeight: MaxHeight;
+    code: string,
+    name: string;
+    grade: TsunamiGrade;
+    immediate: boolean;
+    firstHeight: FirstHeight;
+    maxHeight: MaxHeight;
 };
 
 type FirstHeight = {
-  arrivalTime?: string;
-  condition?: string;
+    arrivalTime?: string;
+    condition?: string;
 };
 
 type MaxHeight = {
-  description?: string;
-  value?: number;
+    description?: string;
+    value?: number;
 };
 
 // 津波警報の種類
@@ -85,7 +85,7 @@ const fetchTsunamiData = async (id: string, isDebug = false): Promise<TsunamiDat
         fatalError.value = true;
         console.error(`Failed to fetch quake data: ${e}`);
 
-        throw("Abort");
+        throw ("Abort");
     }
 };
 
@@ -175,12 +175,23 @@ onMounted(async () => {
     <div class="view">
         <div id="map">
             <div class="loading" v-if="isLoading || mapIsLoading">
-                <svg xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-loader-3"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M3 12a9 9 0 0 0 9 9a9 9 0 0 0 9 -9a9 9 0 0 0 -9 -9" /><path d="M17 12a5 5 0 1 0 -5 5" /></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-loader-3">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M3 12a9 9 0 0 0 9 9a9 9 0 0 0 9 -9a9 9 0 0 0 -9 -9" />
+                    <path d="M17 12a5 5 0 1 0 -5 5" />
+                </svg>
                 <p v-if="isLoading">LOADING...</p>
                 <p v-else-if="mapIsLoading">マップ準備中...</p>
             </div>
             <div class="map-error" v-if="mapError">
-                <svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-map-x"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 19.5l-5 -2.5l-6 3v-13l6 -3l6 3l6 -3v9" /><path d="M9 4v13" /><path d="M15 7v6.5" /><path d="M22 22l-5 -5" /><path d="M17 22l5 -5" /></svg>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-tabler icons-tabler-outline icon-tabler-map-x">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                    <path d="M14 19.5l-5 -2.5l-6 3v-13l6 -3l6 3l6 -3v9" />
+                    <path d="M9 4v13" />
+                    <path d="M15 7v6.5" />
+                    <path d="M22 22l-5 -5" />
+                    <path d="M17 22l5 -5" />
+                </svg>
                 <p>マップのロードに失敗しました</p>
             </div>
         </div>
@@ -458,7 +469,12 @@ onMounted(async () => {
 }
 
 @keyframes rotate-z {
-    from { transform: rotateZ(0deg); }
-    to { transform: rotateZ(360deg); }
+    from {
+        transform: rotateZ(0deg);
+    }
+
+    to {
+        transform: rotateZ(360deg);
+    }
 }
 </style>

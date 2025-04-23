@@ -31,7 +31,8 @@
                 "editor.linkedEditing": true,
                 "editor.formatOnPaste": true,
                 "editor.formatOnSave": true,
-                "vue.server.hybridMode": true
+                "vue.server.hybridMode": true,
+                "html.format.wrapLineLength": 0
             }
         }
     }
