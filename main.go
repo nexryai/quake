@@ -3,22 +3,14 @@ package main
 import (
 	"fmt"
 
-	"github.com/nexryai/polyxia/server/controller"
+	"github.com/nexryai/polyxia/server/geo"
 )
 
 func main() {
-	events, _ := controller.GetJMAEvents()
-
-	fmt.Printf("Total: %d\n", len(*events))
-
-	for _, e := range *events {
-		fmt.Println(e)
-	}
-
-	data, err := controller.GetEventDetailsJson((*events)[0], false)
+	test, err := geo.LatLonToCity(35.5112036, 139.5133511)
 	if err != nil {
 		panic(err)
 	}
 
-	fmt.Printf("%s", *data)
+	fmt.Printf("City: %v\n", test)
 }
