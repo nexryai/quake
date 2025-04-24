@@ -12,5 +12,5 @@ func main() {
 		panic(err)
 	}
 
-	fmt.Printf("City: %v\n", test)
+	fmt.Printf("City: %s\n", test.ForecastCode)
 }

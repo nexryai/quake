@@ -172,6 +172,7 @@ func toPrefName(officecode string) string {
 	return name
 }
 
+// ref: https://qiita.com/yamato1413/items/2e02d1532f8779395a18
 func LatLonToCity(lat, lon float64) (*City, error) {
 	code, err := latLonToLocalCode(lat, lon)
 	if err != nil {
